@@ -32,22 +32,23 @@ func (p *Participle) ForwardMaximumMatchSplit(sentence string) []string {
 	}
 
 	ret := make([]string, 0)
-	flag, index, left, right := false, 0, 0, length
+	flag, index, left := false, 0, 0
 
-	for left < right {
-		flag, _, index = p.tr.FindByRunes(runes[left:right])
+	for left < length {
+		flag, _, index = p.tr.FindByRunes(runes[left:length])
 		index += left
 
 		if flag {
-			ret = append(ret, string(runes[left:right]))
-			left = right
-			right = length
+			ret = append(ret, string(runes[left:length]))
+			return ret
 
 		} else {
 			if index == left {
 				left++
+
 			} else {
-				right = index
+				ret = append(ret, string(runes[left:index]))
+				left = index
 			}
 		}
 	}
